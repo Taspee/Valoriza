@@ -67,7 +67,7 @@ venv.bak/
 
 # CSV data files (tu archivo de datos)
 # Descomenta la siguiente línea si NO quieres subir el CSV al repo
-# valoriza_db_inicial.csv
+valoriza_db_inicial.csv
 
 # Jupyter Notebook
 .ipynb_checkpoints
