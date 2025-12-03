@@ -1,0 +1,163 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Empresas - Valoriza{% endblock %}
+
+{% block extra_css %}
+<style>
+    .industry-badge {
+        background: #e7f3ff;
+        color: #0056b3;
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-size: 11px;
+        display: inline-block;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>🏢 Empresas en Valoriza</h1>
+    <div style="color: #666; margin-bottom: 20px; font-size: 14px;" id="enterprise-count">Cargando empresas...</div>
+    
+    <div id="error-container"></div>
+    <div id="loading" class="loading">Cargando datos...</div>
+    
+    <div style="overflow-x: auto; margin-top: 20px;">
+        <table class="table" id="enterprises-table" style="display: none;">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>País</th>
+                    <th>Industria</th>
+                    <th>Sub-Industria</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody id="table-body">
+            </tbody>
+        </table>
+    </div>
+    
+    <div style="margin-top: 30px; display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+        <a href="/" class="btn btn-secondary">Volver al Home</a>
+        <a href="/industrias/" class="btn btn-secondary">Ver Industrias</a>
+        <button class="btn btn-primary" onclick="loadEnterprises()">Recargar</button>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    console.log('Script de empresas cargado');
+    
+    async function loadEnterprises() {
+        console.log('Iniciando carga de empresas...');
+        
+        const tableBody = document.getElementById('table-body');
+        const table = document.getElementById('enterprises-table');
+        const loadingDiv = document.getElementById('loading');
+        const errorContainer = document.getElementById('error-container');
+        const countDiv = document.getElementById('enterprise-count');
+        
+        if (!tableBody || !table || !loadingDiv || !errorContainer || !countDiv) {
+            console.error('❌ No se encontraron todos los elementos del DOM');
+            return;
+        }
+        
+        tableBody.innerHTML = '';
+        errorContainer.innerHTML = '';
+        loadingDiv.style.display = 'block';
+        table.style.display = 'none';
+
+        try {
+            console.log('Haciendo fetch a /api/enterprises/...');
+            const response = await fetch('/api/enterprises/');
+            
+            if (!response.ok) {
+                throw new Error(`Error HTTP: ${response.status}`);
+            }
+            
+            const data = await response.json();
+            console.log('✅ Datos recibidos:', data);
+            
+            loadingDiv.style.display = 'none';
+            
+            countDiv.textContent = `Mostrando ${data.count} empresas`;
+            
+            if (!data.enterprises || data.enterprises.length === 0) {
+                errorContainer.innerHTML = '<p style="text-align: center; color: #999;">No hay empresas para mostrar.</p>';
+                return;
+            }
+            
+            table.style.display = 'table';
+            
+            data.enterprises.forEach((enterprise, index) => {
+                console.log(`Creando fila ${index + 1}:`, enterprise.name);
+                const row = createEnterpriseRow(enterprise);
+                tableBody.appendChild(row);
+            });
+            
+            console.log(`✅ Se mostraron ${data.enterprises.length} empresas`);
+            
+        } catch (error) {
+            console.error('❌ Error al cargar empresas:', error);
+            loadingDiv.style.display = 'none';
+            errorContainer.innerHTML = `
+                <div class="error">
+                    <strong>Error:</strong> No se pudieron cargar las empresas. ${error.message}
+                </div>
+            `;
+        }
+    }
+
+    function createEnterpriseRow(enterprise) {
+        const row = document.createElement('tr');
+        
+        // Validar que escapeHtml esté definido
+        if (typeof escapeHtml !== 'function') {
+            console.error('❌ escapeHtml no está definido');
+            // Fallback simple
+            window.escapeHtml = function(text) {
+                if (!text) return '';
+                const div = document.createElement('div');
+                div.textContent = text;
+                return div.innerHTML;
+            };
+        }
+        
+        const industry = enterprise.industry 
+            ? `<span class="industry-badge">${escapeHtml(enterprise.industry)}</span>`
+            : '<span style="color: #999;">-</span>';
+        
+        const subIndustry = enterprise.sub_industry 
+            ? escapeHtml(enterprise.sub_industry)
+            : '-';
+        
+        row.innerHTML = `
+            <td>${enterprise.id}</td>
+            <td><strong>${escapeHtml(enterprise.name)}</strong></td>
+            <td>${escapeHtml(enterprise.country)}</td>
+            <td>${industry}</td>
+            <td style="max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${subIndustry}</td>
+            <td>
+                <a href="/empresa/${enterprise.id}/" class="btn btn-success" style="padding: 6px 16px; font-size: 12px;">👁️ Ver</a>
+            </td>
+        `;
+        
+        return row;
+    }
+
+    // Cargar empresas cuando el DOM esté listo
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM listo, cargando empresas...');
+            loadEnterprises();
+        });
+    } else {
+        console.log('DOM ya está listo, cargando empresas inmediatamente...');
+        loadEnterprises();
+    }
+</script>
+{% endblock %}

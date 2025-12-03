@@ -1,0 +1,101 @@
+<style>
+    .navbar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        padding: 15px 30px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        z-index: 1000;
+    }
+
+    .navbar-brand {
+        display: flex;
+        align-items: center;
+        text-decoration: none;
+        color: white;
+        font-size: 24px;
+        font-weight: bold;
+        transition: transform 0.2s;
+    }
+
+    .navbar-brand:hover {
+        transform: scale(1.05);
+    }
+
+    .navbar-brand-icon {
+        margin-right: 10px;
+        font-size: 28px;
+    }
+
+    .navbar-menu {
+        display: flex;
+        gap: 20px;
+        align-items: center;
+    }
+
+    .navbar-link {
+        color: white;
+        text-decoration: none;
+        padding: 8px 16px;
+        border-radius: 5px;
+        transition: all 0.3s;
+        font-size: 14px;
+        font-weight: 500;
+    }
+
+    .navbar-link:hover {
+        background: rgba(255,255,255,0.2);
+    }
+
+    .navbar-link.active {
+        background: rgba(255,255,255,0.3);
+    }
+
+    /* Agregar padding al body para compensar el navbar fijo */
+    body {
+        padding-top: 70px;
+    }
+
+    @media (max-width: 768px) {
+        .navbar {
+            flex-direction: column;
+            gap: 10px;
+            padding: 10px 15px;
+        }
+
+        .navbar-menu {
+            width: 100%;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .navbar-link {
+            font-size: 12px;
+            padding: 6px 12px;
+        }
+
+        body {
+            padding-top: 100px;
+        }
+    }
+</style>
+
+<nav class="navbar">
+    <a href="/" class="navbar-brand">
+        <span class="navbar-brand-icon">💼</span>
+        <span>Valoriza</span>
+    </a>
+    
+    <div class="navbar-menu">
+        <a href="/" class="navbar-link">🏠 Home</a>
+        <a href="/chat/" class="navbar-link">🤖 AI Chat</a>
+        <a href="/empresas/" class="navbar-link">🏢 Empresas</a>
+        <a href="/industrias/" class="navbar-link">🏭 Industrias</a>
+    </div>
+</nav>

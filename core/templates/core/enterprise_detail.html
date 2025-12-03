@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ enterprise.name }} - Valoriza</title>
+    {% block extra_css %}
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .enterprise-container {
+            max-width: 900px;
+            margin: 20px auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .enterprise-header {
+            background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .enterprise-header h1 {
+            font-size: 32px;
+            margin-bottom: 10px;
+            color: white;
+            border: none;
+        }
+
+        .company-id {
+            opacity: 0.9;
+            font-size: 14px;
+        }
+
+        .enterprise-content {
+            padding: 40px;
+        }
+
+        .section {
+            margin-bottom: 30px;
+            padding-bottom: 30px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .section:last-child {
+            border-bottom: none;
+        }
+
+        .section-title {
+            font-size: 20px;
+            color: #007bff;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .info-item {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #007bff;
+        }
+
+        .info-label {
+            font-size: 12px;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 5px;
+        }
+
+        .info-value {
+            font-size: 16px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .info-value.empty {
+            color: #999;
+            font-style: italic;
+        }
+
+        .description-box {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            line-height: 1.6;
+            color: #555;
+        }
+
+        .badge {
+            display: inline-block;
+            background: #e7f3ff;
+            color: #0056b3;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-right: 10px;
+        }
+
+        .badge.sub {
+            background: #e7ffe7;
+            color: #155724;
+        }
+
+        .website-link {
+            display: inline-block;
+            color: #007bff;
+            text-decoration: none;
+            padding: 10px 20px;
+            border: 2px solid #007bff;
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+
+        .website-link:hover {
+            background: #007bff;
+            color: white;
+        }
+
+        .timestamp {
+            font-size: 13px;
+            color: #999;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        @media (max-width: 768px) {
+            .enterprise-header h1 {
+                font-size: 24px;
+            }
+
+            .enterprise-content {
+                padding: 20px;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+    {% endblock %}
+</head>
+<body>
+    <div class="enterprise-container">
+        <div class="enterprise-header">
+            <h1>🏢 {{ enterprise.name }}</h1>
+            <p class="company-id">ID: {{ enterprise.id }}</p>
+        </div>
+
+        <div class="enterprise-content">
+            <!-- Información Básica -->
+            <div class="section">
+                <h2 class="section-title">📋 Información Básica</h2>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <div class="info-label">País</div>
+                        <div class="info-value">{{ enterprise.country }}</div>
+                    </div>
+                    {% if enterprise.website %}
+                    <div class="info-item">
+                        <div class="info-label">Sitio Web</div>
+                        <div class="info-value">
+                            <a href="{{ enterprise.website }}" target="_blank" class="website-link">
+                                🔗 Visitar sitio
+                            </a>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Descripción -->
+            {% if enterprise.description %}
+            <div class="section">
+                <h2 class="section-title">📝 Descripción</h2>
+                <div class="description-box">
+                    {{ enterprise.description }}
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Industria y Sub-Industria -->
+            <div class="section">
+                <h2 class="section-title">🏭 Sector Económico</h2>
+                <div style="margin-top: 15px;">
+                    {% if enterprise.industry %}
+                    <span class="badge">{{ enterprise.industry.name }}</span>
+                    {% else %}
+                    <span class="badge" style="background: #f8d7da; color: #721c24;">Sin industria asignada</span>
+                    {% endif %}
+                    
+                    {% if enterprise.sub_industry %}
+                    <span class="badge sub">{{ enterprise.sub_industry.name }}</span>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Fechas -->
+            <div class="section">
+                <h2 class="section-title">📅 Registro</h2>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <div class="info-label">Fecha de Creación</div>
+                        <div class="info-value timestamp">
+                            📅 {{ enterprise.created_at|date:"d/m/Y H:i" }}
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Última Actualización</div>
+                        <div class="info-value timestamp">
+                            🔄 {{ enterprise.updated_at|date:"d/m/Y H:i" }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Botón Volver -->
+            <div style="text-align: center;">
+                <a href="/empresas/" class="btn btn-primary" style="display: inline-block; padding: 12px 30px; font-size: 16px;">← Volver a Empresas</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

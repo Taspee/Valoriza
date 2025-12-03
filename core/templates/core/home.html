@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Valoriza - Home</title>
+    {% block extra_css %}
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 0;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin: 60px auto 60px;
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        .header h1 {
+            font-size: 48px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+            border: none;
+            color: white;
+        }
+
+        .header p {
+            font-size: 18px;
+            opacity: 0.95;
+            font-weight: 300;
+        }
+
+        .cards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 40px 30px;
+            text-decoration: none;
+            color: #333;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            animation: fadeInUp 0.8s ease-out;
+            animation-fill-mode: backwards;
+        }
+
+        .card:nth-child(1) { animation-delay: 0.1s; }
+        .card:nth-child(2) { animation-delay: 0.2s; }
+        .card:nth-child(3) { animation-delay: 0.3s; }
+        .card:nth-child(4) { animation-delay: 0.4s; }
+        .card:nth-child(5) { animation-delay: 0.5s; }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+
+        .card-icon {
+            font-size: 60px;
+            margin-bottom: 20px;
+            display: block;
+            text-align: center;
+        }
+
+        .card-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #667eea;
+            text-align: center;
+        }
+
+        .card-description {
+            font-size: 15px;
+            color: #666;
+            line-height: 1.6;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .card-button {
+            display: inline-block;
+            width: 100%;
+            padding: 12px 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .card:hover .card-button {
+            background: linear-gradient(135deg, #5568d3 0%, #653a8d 100%);
+            transform: scale(1.05);
+        }
+
+        .footer {
+            margin-top: 60px;
+            text-align: center;
+            color: white;
+            opacity: 0.8;
+            font-size: 14px;
+            padding-bottom: 40px;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+    {% endblock %}
+</head>
+<body>
+    {% block content %}
+    <div class="header">
+        <h1>💼 Valoriza</h1>
+        <p>Plataforma de Gestión Empresarial Inteligente</p>
+    </div>
+
+    <div class="cards-container">
+        <!-- AI Chat Card -->
+        <a href="/chat/" class="card ai-chat">
+            <span class="card-icon">🤖</span>
+            <h2 class="card-title">AI Chat</h2>
+            <p class="card-description">
+                Consulta información de empresas usando inteligencia artificial. 
+                Pregunta en lenguaje natural y obtén resultados instantáneos.
+            </p>
+            <div class="card-button">Abrir Chat AI →</div>
+        </a>
+
+        <!-- Clientes Card -->
+        <a href="/clientes/" class="card clients">
+            <span class="card-icon">👥</span>
+            <h2 class="card-title">Clientes</h2>
+            <p class="card-description">
+                Gestiona tu base de clientes. Visualiza, edita y administra 
+                toda la información de tus contactos empresariales.
+            </p>
+            <div class="card-button">Ver Clientes →</div>
+        </a>
+
+        <!-- Forms Card -->
+        <a href="/formularios/" class="card forms">
+            <span class="card-icon">📝</span>
+            <h2 class="card-title">Formularios</h2>
+            <p class="card-description">
+                Crea y gestiona formularios personalizados. Recopila información 
+                de manera estructurada y eficiente.
+            </p>
+            <div class="card-button">Ir a Formularios →</div>
+        </a>
+
+        <!-- Empresas Card -->
+        <a href="/empresas/" class="card empresas">
+            <span class="card-icon">🏢</span>
+            <h2 class="card-title">Empresas</h2>
+            <p class="card-description">
+                Explora el catálogo completo de empresas registradas. 
+                Accede a información detallada de cada organización.
+            </p>
+            <div class="card-button">Ver Empresas →</div>
+        </a>
+
+        <!-- Industrias Card -->
+        <a href="/industrias/" class="card industrias">
+            <span class="card-icon">🏭</span>
+            <h2 class="card-title">Industrias</h2>
+            <p class="card-description">
+                Navega por los diferentes sectores industriales. 
+                Descubre empresas agrupadas por rubro económico.
+            </p>
+            <div class="card-button">Ver Industrias →</div>
+        </a>
+    </div>
+
+    <div class="footer">
+        <p>© 2024 Valoriza - Gestión Empresarial Inteligente</p>
+    </div>
+    {% endblock %}
+</body>
+</html>
